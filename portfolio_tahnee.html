@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tahnee Rutter | Architecture Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f4f2;
+            color: #1a1a1a;
+        }
+
+        ::selection {
+            background-color: #B9B4AB;
+            color: #ffffff;
+        }
+
+        .splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f4f4f2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            opacity: 1;
+            transition: opacity 1s ease-out;
+        }
+
+        .splash-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .splash-content {
+            text-align: center;
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .nav-link {
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: #FFA500;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 1px;
+            bottom: -4px;
+            left: 50%;
+            background-color: #B9B4AB;
+            transition: all 0.3s ease-out;
+            transform: translateX(-50%);
+        }
+        
+        .nav-link.active::after,
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .project-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .project-card .project-info {
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .project-card:hover .project-info {
+            opacity: 1;
+        }
+
+        .filter-btn {
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active {
+            background-color: #1a1a1a;
+            color: #f4f4f2;
+        }
+        
+        .filter-btn:hover:not(.active) {
+            background-color: #e5e5e3;
+        }
+
+        /* Scroll Animation styles */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+            will-change: opacity, transform;
+        }
+
+        .animate-on-scroll.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .carousel-item {
+            display: none;
+            transition: opacity 0.4s ease-in-out;
+        }
+        .carousel-item.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body class="antialiased">
+
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="text-gray-800">
+                 <img src="images/ttr-logo.png" alt="TTR Logo" class="w-24 h-auto mx-auto">
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header id="header" class="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-md transition-all duration-300">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#home">
+                    <img src="images/ttr-logo.png" alt="TTR Logo" class="w-16 h-auto">
+                </a>
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="#home" class="nav-link text-sm">Home</a>
+                    <a href="#projects" class="nav-link text-sm">Projects</a>
+                    <a href="#about" class="nav-link text-sm">About</a>
+                    <a href="#cv" class="nav-link text-sm">CV</a>
+                </nav>
+                 <button id="mobile-menu-btn" class="md:hidden focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="#home" class="block py-2 text-sm">Home</a>
+            <a href="#projects" class="block py-2 text-sm">Projects</a>
+            <a href="#about" class="block py-2 text-sm">About</a>
+            <a href="#cv" class="block py-2 text-sm">CV</a>
+        </div>
+    </header>
+
+    <main>
+        <!-- Home Section -->
+        <section id="home" class="min-h-screen flex items-center pt-24 md:pt-0">
+            <div class="container mx-auto px-6">
+                <div class="max-w-4xl mx-auto text-center">
+                    <h1 class="text-4xl md:text-6xl font-bold leading-tight tracking-tighter animate-on-scroll">Tahnee Rutter</h1>
+                    <p class="mt-6 text-lg md:text-xl max-w-2xl mx-auto text-gray-600 animate-on-scroll" style="transition-delay: 150ms;">
+                        Architect specialising in residential and mixed-use projects, from concept to delivery. I help teams deliver low-carbon and user-centered buildings.
+                    </p>
+                    <div class="mt-10 animate-on-scroll" style="transition-delay: 300ms;">
+                        <a href="#projects" class="bg-[#B9B4AB] text-white px-8 py-3 rounded-full hover:bg-[#FFA500] transition-colors duration-300 inline-block">View Projects</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="text-3xl font-bold text-center tracking-tight animate-on-scroll">Portfolio</h2>
+                
+                <!-- Filters -->
+                <div id="filters" class="flex flex-wrap justify-center gap-2 md:gap-4 my-10 animate-on-scroll" style="transition-delay: 150ms;">
+                    <button class="filter-btn active px-4 py-2 text-sm rounded-full border border-gray-200" data-filter="all">All</button>
+                    <button class="filter-btn px-4 py-2 text-sm rounded-full border border-gray-200" data-filter="residential">Residential</button>
+                    <button class="filter-btn px-4 py-2 text-sm rounded-full border border-gray-200" data-filter="Hospitality">Hospitality</button>
+                    <button class="filter-btn px-4 py-2 text-sm rounded-full border border-gray-200" data-filter="Urban Intervention">Urban Intervention</button>
+                     <button class="filter-btn px-4 py-2 text-sm rounded-full border border-gray-200" data-filter="academic">Academic</button>
+                </div>
+
+                <!-- Project Grid -->
+                <div id="project-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Projects will be injected here by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 md:py-32">
+            <div class="container mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 items-start">
+                    <div class="md:col-span-1 animate-on-scroll">
+                        <img src="images/IMG_0414.jpg" alt="Tahnee Rutter" class="rounded-lg w-full object-cover">
+                    </div>
+                    <div class="md:col-span-2 animate-on-scroll" style="transition-delay: 150ms;">
+                        <h2 class="text-3xl font-bold tracking-tight">About Me</h2>
+                        <p class="mt-6 text-gray-600 leading-relaxed">
+                            I am a Master's-qualified Architect based in Basel, with two years of professional experience at Diener & Diener Architekten and GRUNER&FRIENDS. My work focuses on delivering thoughtful, sustainable, and contextually-aware architectural solutions. I am passionate about leveraging design and technology to create spaces that are both beautiful and functional.
+                        </p>
+                        
+                        <div class="mt-10">
+                            <h3 class="text-xl font-semibold">Philosophy</h3>
+                            <p class="mt-3 text-gray-600 leading-relaxed">I believe in an architecture that responds sensitively to its climatic and urban context. My approach is rooted in urban continuity and spatial generosity, aiming to create buildings that not only serve their immediate purpose but also contribute positively to the public realm and the environment.</p>
+                        </div>
+
+                         <div class="mt-10">
+                            <h3 class="text-xl font-semibold">Toolkit</h3>
+                            <div class="flex flex-wrap gap-4 mt-4">
+                                <span class="bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">Revit</span>
+                                <span class="bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">ArchiCAD</span>
+                                <span class="bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">AutoCAD</span>
+                                <span class="bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">Rhinoceros</span>
+                                <span class="bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">Adobe Suite</span>
+                                <span class="bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">SketchUp</span>
+                                <span class="bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">V-Ray</span>
+                                <span class="bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">Twinmotion</span>
+                                <span class="bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">Adobe Photoshop</span>
+                                <span class="bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">Adobe InDesign</span>
+                                <span class="bg-gray-200 text-gray-700 px-3 py-1 text-sm rounded-full">Adobe Ilustrator</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CV Section -->
+        <section id="cv" class="py-20 md:py-32 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center animate-on-scroll">
+                    <h2 class="text-3xl font-bold tracking-tight">Curriculum Vitae</h2>
+                     <a href="images/CV_RUTTER.pdf" class="mt-6 bg-[#B9B4AB] text-white px-8 py-3 rounded-full hover:bg-[#FFA500] transition-colors duration-300 inline-block" download="CV_RUTTER.pdf">Download CV</a>
+                </div>
+
+                <div class="max-w-4xl mx-auto mt-16 space-y-12">
+                    <!-- Experience -->
+                    <div class="animate-on-scroll">
+                        <h3 class="text-2xl font-semibold border-b pb-2">Professional Experience</h3>
+                        <div class="mt-6 space-y-6">
+                            <div>
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-bold">Architect, Gruner&Friends</h4>
+                                    <p class="text-sm text-gray-500">09/2024 - Present</p>
+                                </div>
+                                <p class="mt-1 text-gray-600">Worked on a residential competition near Zurich, coordinating with the team and landscape architects to optimize apartment count while ensuring quality living spaces.</p>
+                            </div>
+                             <div>
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-bold">Intern, Diener&Diener Architekten</h4>
+                                    <p class="text-sm text-gray-500">09/2020 - 08/2021</p>
+                                </div>
+                                <p class="mt-1 text-gray-600">Contributed to a mixed-use complex in Basel and a competition-winning residential project in Hamburg. Designed multi-story buildings with a facade system to reduce harbor noise.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Education -->
+                    <div class="animate-on-scroll" style="transition-delay: 150ms;">
+                        <h3 class="text-2xl font-semibold border-b pb-2">Education</h3>
+                        <div class="mt-6 space-y-4">
+                            <div>
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-bold">Master's in Architecture</h4>
+                                    <p class="text-sm text-gray-500">2022 - 2024</p>
+                                </div>
+                                <p class="text-gray-600">Università della Svizzera Italiana (AAM)</p>
+                            </div>
+                            <div>
+                                <div class="flex justify-between items-baseline">
+                                    <h4 class="font-bold">Bachelor's in Architecture</h4>
+                                    <p class="text-sm text-gray-500">2018 - 2022</p>
+                                </div>
+                                <p class="text-gray-600">Università della Svizi Italiana (AAM), including Erasmus at TU Delft</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Skills -->
+                    <div class="animate-on-scroll" style="transition-delay: 300ms;">
+                        <h3 class="text-2xl font-semibold border-b pb-2">Skills & Languages</h3>
+                         <div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <div>
+                                <h4 class="font-bold">Languages</h4>
+                                <ul class="mt-2 list-disc list-inside text-gray-600">
+                                    <li>Italian (Native)</li>
+                                    <li>English (Native)</li>
+                                    <li>German (A2)</li>
+                                    <li>Spanish (B1)</li>
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 class="font-bold">Software</h4>
+                                <ul class="mt-2 list-disc list-inside text-gray-600">
+                                     <li>Revit, AutoCAD, Rhinoceros, ArchiCAD</li>
+                                     <li>Adobe Suite (Photoshop, InDesign, Illustrator)</li>
+                                     <li>SketchUp, V-Ray, Twinmotion</li>
+                                     <li>Microsoft Office & Apple iWork</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white">
+        <div class="container mx-auto px-6 py-10">
+            <div class="flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+                <div>
+                    <h3 class="text-xl font-bold">Let's Connect</h3>
+                    <p class="mt-2 text-gray-400">Feel free to reach out for collaborations or inquiries.</p>
+                </div>
+                <div class="mt-6 md:mt-0 flex items-center space-x-6">
+                    <a href="mailto:tahnee.rutter@outlook.com" class="text-gray-400 hover:text-[#FFA500]">tahnee.rutter@outlook.com</a>
+                    <a href="#" class="text-gray-400 hover:text-[#FFA500]">LinkedIn</a>
+                    <a href="images/CV_RUTTER.pdf" class="bg-[#B9B4AB] text-white px-5 py-2 rounded-full hover:bg-[#FFA500] transition-colors" download="CV_RUTTER.pdf">Download CV</a>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-700 pt-6 text-center text-sm text-gray-500">
+                &copy; <span id="currentYear"></span> Tahnee Rutter. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- Project Detail Modal -->
+    <div id="project-modal" class="hidden fixed inset-0 bg-black bg-opacity-75 z-50 flex justify-center items-center p-4">
+        <div class="bg-white w-full max-w-4xl max-h-[90vh] rounded-lg shadow-2xl flex flex-col">
+            <div class="p-6 border-b flex justify-between items-center">
+                 <h3 id="modal-title" class="text-2xl font-bold"></h3>
+                 <button id="close-modal-btn" class="text-gray-500 hover:text-gray-800 text-3xl leading-none">&times;</button>
+            </div>
+            <div class="p-6 overflow-y-auto">
+                 <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                     <div class="md:col-span-2">
+                        <div id="modal-image-carousel" class="relative mb-4">
+                            <div id="carousel-inner" class="w-full h-auto rounded-lg overflow-hidden">
+                                <!-- Carousel images will be injected here -->
+                            </div>
+                            <button id="carousel-prev" class="absolute top-1/2 left-3 transform -translate-y-1/2 bg-white/60 hover:bg-white p-2 rounded-full focus:outline-none transition-opacity duration-300">
+                                <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                            </button>
+                            <button id="carousel-next" class="absolute top-1/2 right-3 transform -translate-y-1/2 bg-white/60 hover:bg-white p-2 rounded-full focus:outline-none transition-opacity duration-300">
+                                <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </button>
+                        </div>
+                        <h4 class="text-xl font-semibold mb-2 mt-6">Narrative</h4>
+                        <p id="modal-narrative" class="text-gray-600 leading-relaxed"></p>
+                     </div>
+                     <div class="md:col-span-1">
+                         <div class="bg-gray-50 p-4 rounded-lg">
+                            <h4 class="font-bold mb-3">Project Details</h4>
+                            <div class="space-y-2 text-sm text-gray-700">
+                                <p><strong>Location:</strong> <span id="modal-location"></span></p>
+                                <p><strong>Typology:</strong> <span id="modal-typology"></span></p>
+                                <p><strong>Year:</strong> <span id="modal-year"></span></p>
+                                <p><strong>Status:</strong> <span id="modal-status"></span></p>
+                                <p><strong>Firm:</strong> <span id="modal-firm"></span></p>
+                                <p><strong>Role:</strong> <span id="modal-role"></span></p>
+                            </div>
+                         </div>
+                         <div class="mt-6">
+                            <h4 class="font-bold mb-2">Tech Stack</h4>
+                            <div id="modal-stack" class="flex flex-wrap gap-2">
+                            </div>
+                         </div>
+                     </div>
+                 </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // --- Scroll Animation Logic ---
+            const animationObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            // Observe all initial elements
+            document.querySelectorAll('.animate-on-scroll').forEach(element => {
+                animationObserver.observe(element);
+            });
+
+            // Splash Screen Logic
+            const splashScreen = document.getElementById('splash-screen');
+            setTimeout(() => {
+                splashScreen.classList.add('hidden');
+            }, 2000);
+
+            // Header Scroll Effect
+            const header = document.getElementById('header');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('shadow-md');
+                } else {
+                    header.classList.remove('shadow-md');
+                }
+            });
+            
+            // Mobile Menu Toggle
+            const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Close mobile menu on link click
+             mobileMenu.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            // Smooth scrolling for all anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    document.querySelector(this.getAttribute('href')).scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                });
+            });
+            
+             // Active Nav Link on Scroll
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('nav a');
+
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 68) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').substring(1) === current) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+
+            // Set current year in footer
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            // --- Project Data ---
+            const projects = [
+                {
+                    id: 1,
+                    title: "Dreirosenbrücke",
+                    category: ["Urban Intervention"],
+                    year: 2024,
+                    location: "Basel, CH",
+                    firm: "Gruner&Friends",
+                    role: "Architect, Visualization",
+                    status: "Venice Biennale exposition",
+                    narrative: "The project transforms the bridge from a traffic artery into a place to linger, meet, and look out over the Rhine. Green pockets, viewpoints, and activity zones bring life onto the span, while a light timber pergola offers shade and quiet and carries solar panels. With new gathering areas and porous paving, the bridge becomes a shared urban space rather than just a route across the river.",
+                    stack: [ "Rhino", "Photoshop", "Premiere PRO", "InDesign"],
+                    gallery: [
+                        "images/Bridge-1.jpg",
+                        "images/Bridge-2.jpg",
+                        "images/Bridge-3.jpg",
+                        "images/Bridge-4.jpg",
+                        "images/Bridge-5.jpg",
+                        "images/Bridge-6.jpg"
+                    ]
+                },
+                {
+                    id: 2,
+                    title: "Basel Climate Strategy",
+                    category: ["residential", "academic", "Urban Intervention"],
+                    year: 2024,
+                    location: "Basel, CH",
+                    firm: "Studio Sergison - AAM",
+                    role: "Individual Project",
+                    status: "Unbuilt",
+                    narrative: "A master's project exploring how small-scale interventions could reintroduce airflow and permeability to Gundeldingen's urban fabric. I proposed selective openings, new landscaping, and built volumes to guide pedestrians through a reimagined public space, earning positive feedback from Pierre de Meuron.",
+                    stack: ["Rhino", "AutoCAD", "V-Ray", "Photoshop"],
+                    gallery: [
+                        "images/BaselSergi1.jpg",
+                        "images/BaselSergi2.jpg",
+                        "images/BaselSergi3.jpg",
+                        "images/BaselSergi4.jpg",
+                        "images/BaselSergi5.jpg",
+                        "images/BaselSergi6.jpg",
+                        "images/BaselSergi7.jpg",
+                        "images/BaselSergi8.jpg",
+                        "images/BaselSergi9.jpg",
+                        "images/BaselSergi10.jpg"
+                    ]
+                },
+                {
+                    id: 3,
+                    title: "Open Architecture in Paris",
+                    category: ["Urban Intervention", "academic"],
+                    year: 2022,
+                    location: "Paris, FR",
+                    firm: "Atelier Aires Mateus - AAM",
+                    role: "Individual Project",
+                    status: "Unbuilt",
+                    narrative: "This project addresses a fragmented urban site by creating a new building as a civic anchor. The design transforms the area into a contemporary 'agorà,' shaped by subtraction where a large central void allows urban circulation to flow uninterrupted.",
+                    stack: ["AutoCAD", "Rhino", "V-Ray", "Photoshop"],
+                    gallery: [
+                        "images/Paris1.jpg",
+                        "images/Paris2.jpg",
+                        "images/Paris3.jpg",
+                        "images/Paris4.jpg",
+                        "images/Paris5.jpg",
+                        "images/Paris6.jpg",
+                        "images/Paris7.jpg"
+                    ]
+                },
+                {
+                    id: 4,
+                    title: "Housing in Brixton",
+                    category: ["residential", "academic"],
+                    year: 2023,
+                    location: "London, UK",
+                    firm: "Studio Clancy Moore - AAM",
+                    role: "Individual Project",
+                    status: "Unbuilt",
+                    narrative: "A social housing complex that blends West African domestic spaces with London's urban context. Two longitudinal volumes frame an internal courtyard, with apartments designed for large families featuring dual orientation and shared galleries that reinterpret the African verandah.",
+                    stack: ["AutoCAD", "Rhino", "Hand Drawing"],
+                    gallery: [
+                        "images/Brixton1.jpg",
+                        "images/Brixton2.jpg",
+                        "images/Brixton3.jpg",
+                        "images/Brixton4.jpg",
+                        "images/Brixton5.jpg",
+                        "images/Brixton6.jpg",
+                        "images/Brixton7.jpg",
+                        "images/Brixton8.jpg"
+                    ]
+                },
+                {
+                    id: 5,
+                    title: "Settelen Areal Transformation",
+                    category: ["residential"],
+                    year: "2020-21",
+                    location: "Basel, CH",
+                    firm: "Diener&Diener",
+                    role: "Intern Architect",
+                    status: "Built",
+                    narrative: "Contributed to transforming an existing commercial site into a residential complex. My role involved developing and coordinating detailed realization drawings, balancing the preservation of historic wooden structures with the integration of new apartments and commercial spaces.",
+                    stack: ["AutoCAD", "Revit"],
+                    gallery: [
+                        "images/Settelen1.jpg",
+                        "images/Settelen2.jpg",
+                        "images/Settelen3.jpg",
+                        "images/Settelen4.jpg",
+                        "images/Settelen5.jpg"
+                    ]
+                },
+                {
+                    id: 6,
+                    title: "Hafencity Hamburg",
+                    category: ["residential"],
+                    year: 2021,
+                    location: "Hamburg, DE",
+                    firm: "Diener&Diener",
+                    role: "Intern Architect",
+                    status: "Competition Won",
+                    narrative: "As part of a two-person team, we won the competition to design two residential buildings. The proposal emphasizes community and sustainability, featuring semi-public double-height ground floors, green roofs, and solar panels. The facade design mitigates harbor noise.",
+                    stack: ["SketchUp", "AutoCAD", "Photoshop"],
+                    gallery: [
+                        "images/Hamburg1.jpg",
+                        "images/Hamburg2.jpg",
+                        "images/Hamburg3.jpg",
+                        "images/Hamburg4.jpg"
+                    ]
+                },
+                 {
+                    id: 7,
+                    title: "Office Renovation, Netherlands",
+                    category: ["academic"],
+                    year: 2022,
+                    location: "Netherlands",
+                    firm: "TU Delft",
+                    role: "Erasmus Project",
+                    status: "Unbuilt",
+                    narrative: "This project features a natural ventilation system that generates more energy than the building consumes, creating an energy-positive structure. The climate strategy combines a Venturi roof, a climate cascade, and a solar chimney with solar and wind energy harvesting.",
+                    stack: ["AutoCAD", "Rhino"],
+                    gallery: [
+                        "images/Delft1.jpg",
+                        "images/Delft2.jpg"
+                    ]
+                },
+                 {
+                    id: 8,
+                    title: "House for a Birdwatcher",
+                    category: ["residential", "academic"],
+                    year: 2019,
+                    location: "Venetian Lagoon, IT",
+                    firm: "Grafton Architects - AAM",
+                    role: "Individual Project",
+                    status: "Unbuilt",
+                    narrative: "A 35m² self-sufficient house designed for a bird-watcher. Built on reused foundations, the lightweight, prefabricated design echoes local huts and fosters a close connection with nature, incorporating rainwater harvesting and a compost toilet.",
+                    stack: ["AutoCAD", "Rhino"],
+                    gallery: [
+                        "images/Venice1.jpg",
+                        "images/Venice2.jpg",
+                        "images/Venice3.jpg",
+                        "images/Venice4.jpg"
+                    ]
+                },
+                {
+                    id: 9,
+                    title: "Boutique Hotel in Zürich - Ausführungsplanung",
+                    category: ["Hospitality"],
+                    year: 2025,
+                    location: "Zürich, CH",
+                    firm: "Gruner&Friends",
+                    role: "Architect",
+                    status: "Construction Drawings submitted",
+                    narrative: "Delivered SIA Phases 41 (Projektierung) and 51 (Ausführungsplanung) with a focus on interior design, producing detailed construction and coordination drawings. Collaborated with architects, consultants, and contractors to translate design intent into precise, buildable solutions, ensuring clarity, technical accuracy, and timely delivery of high- quality drawing packages.",
+                    stack: ["Revit", "Rhino", "InDesign", "Twinmotion"],
+                    gallery: [
+                         "images/hotel.jpg"
+                    ]
+                },
+                {
+                    id: 10,
+                    title: "“Case a Torre” - Genova",
+                    category: ["Residential", "academic"],
+                    year: 2022,
+                    location: "Genova, IT",
+                    firm: "STUDIO SERGISON - AAM",
+                    role: "Individual Project",
+                    status: "Unbuilt",
+                    narrative: "A masterplan of three building typologies was developed with a strong focus on the voids between them and how these open spaces shape light, views, and circulation. The buildings follow a rotated grid to maximise sunlight and orientation. At ground level, a new piazza opens onto the site, a concrete platform set directly on the water in the centre of Genoa. Above, the roofs of all buildings form a second, elevated landscape that serves as the primary public space for both residents and, in some cases, the wider city. The façades draw from the colours of traditional Ligurian housing in Camogli and feature a fine structural grid that sets up a clear order while allowing for deliberate exceptions.",
+                    stack: ["Autocad", "Rhino", "Photoshop", "InDesign", "Models"],
+                    gallery: [
+                         "images/Genova1.jpg",
+                         "images/Genova2.jpg",
+                         "images/Genova3.jpg",
+                         "images/Genova4.jpg",
+                         "images/Genova5.jpg"
+                    ]
+                },
+                {
+                    id: 11,
+                    title: "3d-printing with paper - A new way of constructing",
+                    category: ["Residential", "academic"],
+                    year: 2023,
+                    location: "London, UK",
+                    firm: "AAM",
+                    role: "3-person Project",
+                    status: "Unbuilt",
+                    narrative: "The course explored innovative construction methods for interior partitions within an existing building in London, focusing on paper as a recyclable material with high waste volumes globally. The design reimagined the building as a 3D-printing hub that produces flexible partitions for the surrounding neighborhood. On the top floor, printers fabricate paper-based components sized according to the lift, which transports them once dry to the required spaces. This experimental system allows for temporary, adaptable layouts. Paper’s recyclability and ease of dismantling make it ideal for short-term uses, and the proposed floor plan is just one of many possible configurations enabled by this construction approach.",
+                    stack: ["Autocad", "Rhino", "Photoshop", "InDesign", "Twinmotion"],
+                    gallery: [
+                         "images/3dprint1.jpg",
+                         "images/3dprint2.jpg",
+                         "images/3dprint3.jpg",
+                         "images/3dprint4.jpg",
+                         "images/3dprint5.jpg",
+                         "images/3dprint6.jpg",
+                         "images/3dprint7.jpg",
+                         "images/3dprint8.jpg"
+                    ]
+                }
+            ];
+
+            const projectGrid = document.getElementById('project-grid');
+            const filtersContainer = document.getElementById('filters');
+            
+            // --- Modal Elements ---
+            const modal = document.getElementById('project-modal');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const modalTitle = document.getElementById('modal-title');
+            const modalNarrative = document.getElementById('modal-narrative');
+            const modalLocation = document.getElementById('modal-location');
+            const modalTypology = document.getElementById('modal-typology');
+            const modalYear = document.getElementById('modal-year');
+            const modalStatus = document.getElementById('modal-status');
+            const modalFirm = document.getElementById('modal-firm');
+            const modalRole = document.getElementById('modal-role');
+            const modalStack = document.getElementById('modal-stack');
+            const carouselInner = document.getElementById('carousel-inner');
+            const carouselPrev = document.getElementById('carousel-prev');
+            const carouselNext = document.getElementById('carousel-next');
+
+            let currentGallery = [];
+            let currentSlideIndex = 0;
+
+
+            // --- Functions ---
+            const displayProjects = (projectList) => {
+                projectGrid.innerHTML = projectList.map((project, index) => `
+                    <div class="project-card bg-white rounded-lg overflow-hidden cursor-pointer group animate-on-scroll" data-id="${project.id}" style="transition-delay: ${index * 100}ms;">
+                        <div class="relative">
+                           <img src="${project.gallery[0]}" alt="${project.title}" class="w-full h-64 object-cover">
+                           <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 project-info">
+                                <p class="text-white text-center">${project.narrative.substring(0, 100)}...</p>
+                           </div>
+                        </div>
+                        <div class="p-5">
+                            <h3 class="font-bold text-lg">${project.title}</h3>
+                            <p class="text-sm text-gray-500">${project.firm} &middot; ${project.year}</p>
+                        </div>
+                    </div>
+                `).join('');
+                
+                 // Re-observe new elements that are not yet visible
+                document.querySelectorAll('.animate-on-scroll:not(.is-visible)').forEach(element => {
+                    animationObserver.observe(element);
+                });
+
+                // Add event listeners to new cards
+                 document.querySelectorAll('.project-card').forEach(card => {
+                    card.addEventListener('click', () => openModal(card.dataset.id));
+                });
+            };
+
+            const showSlide = (index) => {
+                const slides = carouselInner.querySelectorAll('.carousel-item');
+                slides.forEach((slide, i) => {
+                    slide.classList.toggle('active', i === index);
+                });
+                carouselPrev.style.display = index === 0 ? 'none' : 'block';
+                carouselNext.style.display = index === slides.length - 1 ? 'none' : 'block';
+            };
+            
+            const openModal = (projectId) => {
+                const project = projects.find(p => p.id == projectId);
+                if (!project) return;
+                
+                modalTitle.textContent = project.title;
+                currentGallery = project.gallery;
+                currentSlideIndex = 0;
+
+                carouselInner.innerHTML = currentGallery.map(imgSrc => `
+                    <div class="carousel-item">
+                        <img src="${imgSrc}" alt="${project.title}" class="w-full h-auto object-cover">
+                    </div>
+                `).join('');
+
+                if (currentGallery.length <= 1) {
+                    carouselPrev.style.display = 'none';
+                    carouselNext.style.display = 'none';
+                }
+
+                showSlide(currentSlideIndex);
+                
+                modalNarrative.textContent = project.narrative;
+                modalLocation.textContent = project.location;
+                modalTypology.textContent = project.category.join(', ');
+                modalYear.textContent = project.year;
+                modalStatus.textContent = project.status;
+                modalFirm.textContent = project.firm;
+                modalRole.textContent = project.role;
+                modalStack.innerHTML = project.stack.map(tech => `<span class="bg-gray-200 text-gray-700 px-2 py-1 text-xs rounded-full">${tech}</span>`).join('');
+                
+                modal.classList.remove('hidden');
+                document.body.style.overflow = 'hidden'; // Prevent background scrolling
+            };
+
+            const closeModal = () => {
+                modal.classList.add('hidden');
+                document.body.style.overflow = 'auto';
+            };
+
+            // --- Event Listeners ---
+            carouselPrev.addEventListener('click', () => {
+                currentSlideIndex = (currentSlideIndex > 0) ? currentSlideIndex - 1 : 0;
+                showSlide(currentSlideIndex);
+            });
+
+            carouselNext.addEventListener('click', () => {
+                currentSlideIndex = (currentSlideIndex < currentGallery.length - 1) ? currentSlideIndex + 1 : currentGallery.length - 1;
+                showSlide(currentSlideIndex);
+            });
+
+            filtersContainer.addEventListener('click', (e) => {
+                if (e.target.tagName === 'BUTTON') {
+                    // Update active button style
+                    const currentActive = filtersContainer.querySelector('.active');
+                    if (currentActive) {
+                        currentActive.classList.remove('active');
+                    }
+                    e.target.classList.add('active');
+
+                    const filter = e.target.dataset.filter;
+                    const filteredProjects = filter === 'all' 
+                        ? projects 
+                        : projects.filter(p => p.category.includes(filter));
+                    
+                    displayProjects(filteredProjects);
+                }
+            });
+
+            closeModalBtn.addEventListener('click', closeModal);
+
+            // Close modal when clicking on the background overlay
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeModal();
+                }
+            });
+
+            // Initial Display
+            displayProjects(projects);
+
+        });
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
